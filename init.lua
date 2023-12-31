@@ -50,8 +50,32 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
+      "pyright"
     },
+    config = {
+      rust_analyzer = {
+        settings = {
+          ["rust-analyzer"] = {
+            cargo = {
+              extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = 'dev', },
+              extraArgs = { "--profile", "rust-analyzer", },
+            },
+          },
+           -- Add clippy lints for Rust.
+          checkOnSave = {
+            allFeatures = true,
+            command = "clippy",
+            extraArgs = { "--no-deps" },
+          },
+        },
+      },
+      clangd = {
+        capabilities = {
+          offsetEncoding = "utf-8",
+        },
+      },
+    },
+
   },
 
   -- Configure require("lazy").setup() options
@@ -81,14 +105,19 @@ return {
     --     ["~/%.config/foo/.*"] = "fooscript",
     --   },
     -- }
-    local lspconfig = require('lspconfig')
-    lspconfig.rust_analyzer.setup {
-      -- Server-specific settings. See `:help lspconfig-setup`
-      settings = {
-        ['rust-analyzer'] = {},
-      },
-    }
+    -- local lspconfig = require('lspconfig')
+    -- lspconfig.rust_analyzer.setup {
+    --   -- Server-specific settings. See `:help lspconfig-setup`
+    --   settings = {
+    --     ['rust-analyzer'] = {},
+    --   },
+    -- }
+    
+    require("toggleterm").setup{
 
+      shell = "/usr/bin/fish"
+
+    }
 
     local dap = require('dap')
     dap.adapters.codelldb = {
@@ -103,33 +132,49 @@ return {
       }
     }
 
-    dap.configurations.rust = {
-      {
-        name = "Launch file",
-        type = "codelldb",
-        request = "launch",
-        program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
-        end,
-        cwd = '${workspaceFolder}',
-        stopOnEntry = false,
-      },
-    }
+    -- dap.configurations.rust = {
+    --   {
+    --     name = "Launch file",
+    --     type = "codelldb",
+    --     request = "launch",
+    --     program = function()
+    --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+    --     end,
+    --     cwd = '${workspaceFolder}',
+    --     stopOnEntry = false,
+    --   },
+    -- }
+    --
+    -- dap.configurations.cpp = {
+    --   {
+    --     name = "Launch file",
+    --     type = "codelldb",
+    --     request = "launch",
+    --     program = function()
+    --       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    --     end,
+    --     cwd = '${workspaceFolder}',
+    --     stopOnEntry = false,
+    --   },
+    -- }
+    --
+    -- dap.configurations.c = dap.configurations.cpp
 
-    dap.configurations.cpp = {
-      {
-        name = "Launch file",
-        type = "codelldb",
-        request = "launch",
-        program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        end,
-        cwd = '${workspaceFolder}',
-        stopOnEntry = false,
-      },
-    }
+    if vim.g.neovide then
+      vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
+      vim.keymap.set('v', '<D-c>', '"+y') -- Copy
+      vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
+      vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
+      vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
+      vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
+    end
 
-    dap.configurations.c = dap.configurations.cpp
+    -- Allow clipboard copy paste in neovim
+    vim.api.nvim_set_keymap('', '<D-v>', '+p<CR>', { noremap = true, silent = true})
+    vim.api.nvim_set_keymap('!', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+    vim.api.nvim_set_keymap('t', '<D-v>', '<C-R>+', { noremap = true, silent = true})
+    vim.api.nvim_set_keymap('v', '<D-v>', '<C-R>+', { noremap = true, silent = true})
 
+    
   end,
 }
