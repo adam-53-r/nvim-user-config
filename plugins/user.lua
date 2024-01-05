@@ -19,7 +19,7 @@ return {
       enable = true,
       additional_vim_regex_highlighting=false,
     },
-    ident = { enable = true }, 
+    ident = { enable = true },
     rainbow = {
       enable = true,
       extended_mode = true,
@@ -41,5 +41,5 @@ return {
   },
   -- "mg979/vim-visual-multi",
   -- "normen/vim-pio",
-  -- "neoclide/coc.nvim"  
+  -- "neoclide/coc.nvim"
 }
