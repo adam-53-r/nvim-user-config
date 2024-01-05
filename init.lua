@@ -50,7 +50,7 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      "pyright"
+      -- "pyright"
     },
     config = {
       rust_analyzer = {
@@ -119,18 +119,18 @@ return {
 
     }
 
-    local dap = require('dap')
-    dap.adapters.codelldb = {
-      type = 'server',
-      port = "${port}",
-      executable = {
-        command = '/usr/bin/codelldb',
-        args = {"--port", "${port}"},
-
-        -- On windows you may have to uncomment this:
-        -- detached = false,
-      }
-    }
+    -- local dap = require('dap')
+    -- dap.adapters.codelldb = {
+    --   type = 'server',
+    --   port = "${port}",
+    --   executable = {
+    --     command = '/usr/bin/codelldb',
+    --     args = {"--port", "${port}"},
+    --
+    --     -- On windows you may have to uncomment this:
+    --     -- detached = false,
+    --   }
+    -- }
 
     -- dap.configurations.rust = {
     --   {
