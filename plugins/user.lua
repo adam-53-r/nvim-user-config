@@ -39,7 +39,7 @@ return {
       dap.listeners.before.event_exited["dapui_config"] = nil
     end,
   },
-  "mg979/vim-visual-multi",
-  "normen/vim-pio",
-  
+  -- "mg979/vim-visual-multi",
+  -- "normen/vim-pio",
+  -- "neoclide/coc.nvim"  
 }
